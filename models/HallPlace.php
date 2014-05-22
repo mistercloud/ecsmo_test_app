@@ -11,7 +11,7 @@ use Yii;
  * @property string $cinema_id
  * @property string $hall_id
  *
- * @property Halls $cinema
+ * @property Halls $hall
  * @property TicketPlaces $ticketPlaces
  */
 class HallPlace extends \yii\db\ActiveRecord
@@ -50,9 +50,9 @@ class HallPlace extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCinema()
+    public function getHall()
     {
-        return $this->hasOne(Halls::className(), ['id' => 'cinema_id', 'cinema_id' => 'hall_id']);
+        return $this->hasOne(Halls::className(), ['id' => 'hall_id', 'cinema_id' => 'cinema_id']);
     }
 
     /**

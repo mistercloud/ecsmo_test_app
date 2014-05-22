@@ -33,8 +33,7 @@ class Session extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'cinema_id', 'hall_id', 'film_id'], 'integer'],
+            [['cinema_id', 'hall_id', 'film_id'], 'integer'],
             [['start_at'], 'safe']
         ];
     }
@@ -56,9 +55,9 @@ class Session extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCinema()
+    public function getHall()
     {
-        return $this->hasOne(Halls::className(), ['id' => 'cinema_id', 'cinema_id' => 'hall_id']);
+        return $this->hasOne(Hall::className(), ['id' => 'hall_id', 'cinema_id' => 'cinema_id']);
     }
 
     /**
@@ -66,7 +65,7 @@ class Session extends \yii\db\ActiveRecord
      */
     public function getFilm()
     {
-        return $this->hasOne(Films::className(), ['id' => 'film_id']);
+        return $this->hasOne(Film::className(), ['id' => 'film_id']);
     }
 
     /**
@@ -74,6 +73,28 @@ class Session extends \yii\db\ActiveRecord
      */
     public function getTickets()
     {
-        return $this->hasMany(Tickets::className(), ['session_id' => 'id']);
+        return $this->hasMany(Ticket::className(), ['session_id' => 'id']);
+    }
+
+    public function getTicketPlaces(){
+        return $this->hasMany(TicketPlace::className(),['ticket_id'=>'id'])
+            ->viaTable('tickets',['session_id' => 'id']);
+    }
+
+    public function getFreePlaces(){
+        //получаем занятые места
+        $ordered_places = [];
+        foreach($this->ticketPlaces as $ticket_place){
+            $ordered_places[] = (int)$ticket_place['hall_place_id'];
+        }
+        $places = [];
+        foreach($this->hall->hallPlaces as $hall_place){
+            $places[] = (int)$hall_place->id;
+        }
+        $free_places = array_diff($places,$ordered_places);
+        //убираем лишние ключи
+
+
+        return array_values($free_places);
     }
 }

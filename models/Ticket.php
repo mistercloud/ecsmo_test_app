@@ -55,6 +55,6 @@ class Ticket extends \yii\db\ActiveRecord
      */
     public function getSession()
     {
-        return $this->hasOne(Sessions::className(), ['id' => 'session_id']);
+        return $this->hasOne(Session::className(), ['id' => 'session_id']);
     }
 }

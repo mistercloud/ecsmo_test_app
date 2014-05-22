@@ -38,6 +38,10 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'GET api/cinema/<name:\w+>/schedule' => 'api/cinema',
+                'GET api/film/<name:\w+>/schedule' => 'api/film',
+                'GET api/session/<id:\d+>/places' => 'api/session',
+                'POST api/tickets/buy' => 'api/buy',
+                'POST api/tickets/reject/<code:\w+>' => 'api/reject',
             ],
         ],
     ],

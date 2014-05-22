@@ -51,7 +51,7 @@ class Hall extends \yii\db\ActiveRecord
      */
     public function getHallPlaces()
     {
-        return $this->hasOne(HallPlaces::className(), ['cinema_id' => 'id', 'hall_id' => 'cinema_id']);
+        return $this->hasMany(HallPlace::className(), ['cinema_id' => 'cinema_id', 'hall_id' => 'id']);
     }
 
     /**
@@ -59,7 +59,7 @@ class Hall extends \yii\db\ActiveRecord
      */
     public function getCinema()
     {
-        return $this->hasOne(Cinemas::className(), ['id' => 'cinema_id']);
+        return $this->hasOne(Cinema::className(), ['id' => 'cinema_id']);
     }
 
     /**
@@ -67,6 +67,6 @@ class Hall extends \yii\db\ActiveRecord
      */
     public function getSessions()
     {
-        return $this->hasMany(Sessions::className(), ['cinema_id' => 'id', 'hall_id' => 'cinema_id']);
+        return $this->hasMany(Session::className(), ['cinema_id' => 'id', 'hall_id' => 'cinema_id']);
     }
 }
